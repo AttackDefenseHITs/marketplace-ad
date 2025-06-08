@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    hostname: database
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=user1
+      - POSTGRES_USER=user1
+      - POSTGRES_PASSWORD=user1
+    ports:
+      - "5429:5432"
+  redis:
+    container_name: redis
+    image: redis:latest
+    hostname: redis
+    ports:
+      - "6379:6379"
+  webapi:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    hostname: webapi
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/user1
+        POSTGRES_USER: user1
+        POSTGRES_PASSWORD: user1
+        SPRING_REDIS_HOST: redis
+        SPRING_REDIS_PORT: 6379
+    healthcheck:
+      test: curl http://localhost:8080 || exit 0
+      interval: 10s
+      retries: 5
+      start_period: 15s
+      timeout: 0910s

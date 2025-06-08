@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+jwt:
+  secret: r1Wq3Y7Ql8ivrpC4A6vEgBg1kllCKCrFkwhbZUNZ6Y8=
+  lifetime: 30m
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5429/user1
+    username: user1
+    password: user1
+  flyway:
+    enabled: true
+    locations:
+      - migration
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+springdoc:
+  swagger-ui:
+    enabled: true

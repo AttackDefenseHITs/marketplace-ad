@@ -16,6 +16,14 @@ import java.util.List;
 public class ProductPurchaseController {
     private final ProductPurchaseService productPurchaseService;
 
+    @PostMapping("/{productId}")
+    public ResponseEntity<Void> purchaseProduct(
+            @PathVariable Long productId,
+            @AuthenticationPrincipal User user) {
+        productPurchaseService.purchaseProduct(productId, user);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/my")
     public ResponseEntity<List<ProductPurchaseDto>> getMyPurchases(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(productPurchaseService.getUserPurchases(user));

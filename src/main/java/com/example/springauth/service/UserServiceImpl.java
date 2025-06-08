@@ -30,9 +30,7 @@ public class UserServiceImpl {
         User user = UserMapper.mapRegisterBodyToUser(body);
         userRepository.save(user);
 
-        return TokenResponse.builder()
-                .token(jwtTokenUtils.generateToken(user))
-                .build();
+        return new TokenResponse(jwtTokenUtils.generateToken(user));
     }
 
     public UserDto getUserResponseByAuthentication(Authentication authentication) {
@@ -52,9 +50,7 @@ public class UserServiceImpl {
             throw new UsernameNotFoundException("Invalid login details");
         }
 
-        return TokenResponse.builder()
-                .token(jwtTokenUtils.generateToken(user))
-                .build();
+        return new TokenResponse(jwtTokenUtils.generateToken(user));
     }
 
     public ResponseEntity<?> logoutUser(Authentication authentication){
